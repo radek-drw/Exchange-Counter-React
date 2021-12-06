@@ -1,69 +1,109 @@
 const Currency = props => {
-  const { amount, ratio, title, char } = props;
-  const value = (amount / ratio).toFixed(2);
+  const { title, ratio, amount, price } = props;
+  const value = (amount / ratio * price).toFixed(2);
 
   return (
-    <h3>{title}{amount <= 0 ? '' : `${char} ${value}`}</h3>
+    <h3>{title} {amount <= 0 ? null : value}</h3>
   )
 }
 
 class ExchangeCounter extends React.Component {
 
   state = {
-    amount: ''
+    amount: '',
+    product: 'petrol'
   }
 
-  currencies = [
-    {
-      id: 1,
-      name: 'euro',
-      ratio: 4.6,
-      title: 'Value in euros: ',
-      char: '€'
-    },
-    {
-      id: 2,
-      name: 'dollar',
-      ratio: 3.7,
-      title: 'Value in dollars: ',
-      char: '$'
-    },
-    {
-      id: 3,
-      name: 'pound',
-      ratio: 5.15,
-      title: 'Value in pounds: ',
-      char: '£'
-    }
-  ];
+  static defaultProps = {
+    currencies: [
+      {
+        id: 1,
+        name: 'zloty',
+        ratio: 1,
+        title: 'Value in polish zloty is:'
+      },
+      {
+        id: 2,
+        name: 'euro',
+        ratio: 4.65,
+        title: 'Value in euros is:'
+      },
+      {
+        id: 3,
+        name: 'dollar',
+        ratio: 3.75,
+        title: 'Value in dollars is:'
+      },
+      {
+        id: 4,
+        name: 'pound',
+        ratio: 5.12,
+        title: 'Value in pounds is:'
+      },
+    ],
+    products: {
+      electricity: .51,
+      petrol: 5.45,
+      apples: 2.99
 
-  handleChange = (e) => {
+    }
+  }
+
+  handleInput = e => {
     this.setState({
       amount: e.target.value
     })
   }
 
-  render() {
+  handleSelect = e => {
+    this.setState({
+      product: e.target.value
+    })
+  }
 
-    const currencies = this.currencies.map(currency => (
+  insertSuffix = select => {
+    if (select === 'electricity') return <span> kWh</span>
+    else if (select === 'petrol') return <span> litres</span>
+    else if (select === 'apples') return <span> kilograms</span>
+  }
+
+  productPrice = product => {
+    return this.props.products[product]
+  }
+
+  render() {
+    const { amount, product } = this.state;
+
+    const currencies = this.props.currencies.map(currency => (
       <Currency
-        amount={this.state.amount}
         key={currency.id}
-        ratio={currency.ratio}
         title={currency.title}
-        char={currency.char}
+        ratio={currency.ratio}
+        amount={amount}
+        price={this.productPrice(product)}
       />
     ))
 
     return (
       <div>
 
-        <label>Enter a value PLN:
+        <label>Choose product:
+          <select value={product} onChange={this.handleSelect}>
+            <option value="electricity">Electricity</option>
+            <option value="petrol">Petrol</option>
+            <option value="apples">Apples</option>
+          </select>
+        </label>
+
+        <br />
+
+        <label>Enter value:
           <input
             type="number"
-            value={this.state.amount}
-            onChange={this.handleChange}
+            onChange={this.handleInput}
+            value={amount}
           />
+          {this.insertSuffix(this.state.product)}
         </label>
 
         {currencies}
