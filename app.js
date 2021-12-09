@@ -7,44 +7,53 @@ const Currency = props => {
    )
 }
 
+const electricity = 'electricity';
+const petrol = 'petrol';
+const apples = 'apples';
+
+const zloty = 'zloty';
+const euro = 'euro';
+const dollar = 'dollar';
+const pound = 'pound';
+
 class ExchangeCounter extends React.Component {
 
    state = {
       amount: '',
-      product: 'petrol'
+      product: petrol
    }
 
    static defaultProps = {
       currencies: [
          {
             id: 1,
-            name: 'zloty',
+            name: zloty,
             ratio: 1,
             title: 'Value in polish zloty is:'
          },
          {
             id: 2,
-            name: 'euro',
+            name: euro,
             ratio: 4.56,
             title: 'Value in euros is:'
          },
          {
             id: 3,
-            name: 'dollar',
+            name: dollar,
             ratio: 3.67,
             title: 'Value in dollars is:'
          },
          {
             id: 4,
-            name: 'pound',
+            name: pound,
             ratio: 5.12,
             title: 'Value in pounds is:'
          },
       ],
       prices: {
-         electricity: .51,
-         petrol: 5.24,
-         apples: 2.99
+         [electricity]: .51,
+         [petrol]: 5.24,
+         [apples]: 2.99
       }
    }
 
@@ -61,9 +70,9 @@ class ExchangeCounter extends React.Component {
    }
 
    productUnit(product) {
-      if (product === 'electricity') return <span> kWh</span>
-      else if (product === 'petrol') return <span> litres</span>
-      else if (product === 'apples') return <span> kilograms</span>
+      if (product === electricity) return <span> kWh</span>
+      else if (product === petrol) return <span> litres</span>
+      else if (product === apples) return <span> kilograms</span>
       else return null
    }
 
@@ -89,9 +98,9 @@ class ExchangeCounter extends React.Component {
 
             <label>Select product:
                <select value={product} onChange={this.handleSelect}>
-                  <option value="electricity">Electricity</option>
-                  <option value="petrol">Petrol</option>
-                  <option value="apples">Apples</option>
+                  <option value={electricity}>Electricity</option>
+                  <option value={petrol}>Petrol</option>
+                  <option value={apples}>Apples</option>
                </select>
             </label>
 
