@@ -65,7 +65,8 @@ class ExchangeCounter extends React.Component {
 
    handleSelect = e => {
       this.setState({
-         product: e.target.value
+         product: e.target.value,
+         amount: ''
       })
    }
 
